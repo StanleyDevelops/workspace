@@ -1,0 +1,16 @@
+Path
+1. cwd()
+2. home() /
+3. is_file
+4. is_dir
+5. iterdir()
+6. exists()
+7. mkdir(exists_ok= True)
+8. name,suffix etc
+
+od
+1. mkdir()
+2. getcwd
+3. remove()
+4. listdir()
+5. getenv()

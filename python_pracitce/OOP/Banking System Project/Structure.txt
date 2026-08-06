@@ -1,0 +1,23 @@
+Account (abstract base)
+├── account_number, owner, _balance
+├── @property balance
+├── deposit() - concrete, same for all
+├── withdraw() - abstract, different per account type
+├── __str__, __repr__
+
+SavingsAccount(Account)
+├── interest_rate
+├── withdraw() - cannot go below minimum balance
+├── add_interest() - adds interest to balance
+
+CurrentAccount(Account)
+├── overdraft_limit
+├── withdraw() - can go negative up to overdraft limit
+
+Bank (composition)
+├── name
+├── accounts (list)
+├── add_account(account)
+├── find_account(account_number)
+├── total_deposits()
+├── show_all_accounts()

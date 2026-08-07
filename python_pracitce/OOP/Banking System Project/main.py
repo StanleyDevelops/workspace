@@ -16,6 +16,14 @@ class Account(ABC):
     @property
     def balance(self):
         return self._balance
+    
+    # setter method - pythonic
+    @balance.setter
+    def balance(self,value):
+        if value < 0:
+            print(f"Balance cannot be negative")
+        else:
+            self._balance = value
         
     # add money to bank account
     def deposit(self, amount):
@@ -98,6 +106,10 @@ class SavingsAccount(Account):
         self._balance += interest
         print(f"Interest of ₹{interest:.2f} added to {self.owner}'s account.")
 
+    # define account type method
+    @property
+    def account_type(self):
+        return "Savings"
 
 class CurrentAccount(Account):
 
@@ -123,6 +135,11 @@ class CurrentAccount(Account):
                                                 "amount": amount,
                                                 "balance_after": self._balance}) 
 
+    # account_type
+    @property
+    def account_type(self):
+        return "Current"
+ 
 class Bank:
 
     def __init__(self, name):
@@ -148,9 +165,9 @@ class Bank:
         print(f"Total deposits: ₹{total}")
 
     def show_all_accounts(self):
-        print(f"------ACCOUNTS-----")
+        print(f"------------ {self.name}'s ACCOUNTS -----------")
         for account in self.accounts:
-            print(account)
+            print(f"[{account.account_type}] {account}")
 
     # Adding show rich account and apply interest to all features
 
@@ -171,6 +188,15 @@ class Bank:
 
         print(f"The Total Account Applied Interest to: {total_acc_interest}")
 
+    # bank account removal method
+    def remove_account(self, account_number):
+        for account in self.accounts:
+            if account.account_number == account_number:
+                self.accounts.remove(account)
+                print(f"{account.owner}'s {account.account_type} account Deleted from {self.name}'s Bank.")
+                return
+            
+        print(f"Account with Number {account_number} not Found!")
         
 
 # testing account objects
@@ -237,6 +263,7 @@ cur.show_history()  '''
 
 # Testing rich accounts and apply interest all methods
 
+'''
 bank = Bank("Stanley's Bank")
 sav1 = SavingsAccount("SAV001", "Stanley", 2000, interest_rate=0.05)
 sav2 = SavingsAccount("SAV002", "Priya", 5000, interest_rate=0.08)
@@ -250,4 +277,31 @@ bank.show_rich_accounts(1500)
 print()
 bank.apply_interest_all()
 print()
+bank.show_all_accounts()   '''
+
+# Test account_type and remove method
+
+bank = Bank("Stanley's Bank")
+sav1 = SavingsAccount("SAV001", "Stanley", 2000, interest_rate=0.05)
+sav2 = SavingsAccount("SAV002", "Priya", 5000, interest_rate=0.08)
+cur = CurrentAccount("CUR001", "Rahul", 1000, overdraft_limit=500)
+
+bank.add_account(sav1)
+bank.add_account(sav2)
+bank.add_account(cur)
+
 bank.show_all_accounts()
+print()
+
+bank.remove_account("SAV002")
+bank.remove_account("XYZ999")   # not found
+print()
+
+bank.show_all_accounts()
+print()
+
+# test balance setter
+sav1.balance = 5000
+print(sav1.balance)
+sav1.balance = -100   # should reject
+print(sav1.balance)
